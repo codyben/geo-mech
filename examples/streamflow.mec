@@ -1,0 +1,48 @@
+This program calculates the discharge at both baseflow and bankfull conditions for Saucon Creek in Hellertown, PA
+Oh, and its also the first program I've written in mech, so its probably really rough.
+
+datatable
+  #sauconCreek = [|binSize channelDepth waterDepth flowVelocity |
+                1 0.60960 0 0
+                1 0.79248 0 0
+                1 1.15824 0.03048 0.02
+                1 1.15824 0.1524 0.169
+                1 1.15824 0.24384 0.163
+                1 1.15824 0.27432 0.268
+                1 1.15824 0.36576 0.215
+                1 1.15824 0.42672 0.244
+                1 1.15824 0.4572 0.355
+                1 1.15824 0.4572 0.414
+                1 1.15824 0.42672 0.603
+                1 1.15824 0.4572 0.505
+                1 1.15824 0.4572 0.351
+                1 1.15824 0.33528 0.21
+                1 1.15824 0 0
+                1 1.15824 0.03048 0
+                1 1.15824 0.01524 0
+                1 0.91440 0 0
+                1 0.64008 0 0]
+
+calculationsArea
+  #areaBaseflow = #sauconCreek.binSize * #sauconCreek.waterDepth
+  #areaBankfull = #sauconCreek.binSize * (#sauconCreek.waterDepth + #sauconCreek.channelDepth)
+
+calculationsDischarge
+  #dischargeBaseflow = #areaBaseflow * #sauconCreek.flowVelocity
+  #dischargeBankfull = #areaBankfull * #sauconCreek.flowVelocity
+
+collectIndividualBins
+  #baseflow = [|name data |
+  			"Baseflow Discharge Per Bin" #dischargeBaseflow]
+  #bankfull = [|name data |
+  			"Bankfull Discharge Per Bin" #dischargeBankfull]
+
+collectSummations
+  totalBaseflow = stat/sum(column: #baseflow.data)
+  totalBankfull = stat/sum(column: #bankfull.data)
+  #out = [|name data |
+  			"Total Baseflow Discharge" totalBaseflow
+  			"Total Bankfull Discharge" totalBankfull]
+
+display
+  #mech/output = #out
