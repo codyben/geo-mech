@@ -1,0 +1,84 @@
+In this example, we assume each block has an equal amount of sediment in it, 2 units. This models the sediment flux over one unit of time.
+
+flux-block
+  #localSEA = 8
+  #globalSedFlux = 0
+  #sedimentIn = 5
+  #sedimentOut = 6
+  #sed-flux-1 = 1;
+  #sed-flux-2 = 4;
+  #sed-flux-3 = -3;
+  #sed-flux-4 = 3;
+  #sed-flux-5 = 9;
+  #sed-flux-6 = -10;
+  #sed-flux-7 = 2;
+  #sed-flux-8 = -1;
+  #sed-flux-9 = 2;
+  #sed-flux-10 = 0;
+  #sed-flux-1-new = 0;
+  #sed-flux-2-new = 0;
+  #sed-flux-3-new = 0;
+  #sed-flux-4-new = 0;
+  #sed-flux-5-new = 0;
+  #sed-flux-6-new = 0;
+  #sed-flux-7-new = 0;
+  #sed-flux-8-new = 0;
+  #sed-flux-9-new = 0;
+  #sed-flux-10-new = 0;
+
+hillslope-block-1
+  local-sediment-delta = 2 + #sediment-in + #sediment-out
+  #sed-flux-1-new = #sed-flux-1 + local-sediment-delta
+
+hillslope-block-2
+  local-sediment-delta = 2 + #sed-flux-1-new
+  #sed-flux-2-new = #sed-flux-2 + local-sediment-delta
+
+hillslope-block-3
+  local-sediment-delta = 2 + #sed-flux-2-new
+  #sed-flux-3-new = #sed-flux-3 + local-sediment-delta
+
+hillslope-block-4
+  local-sediment-delta = 2 + #sed-flux-3-new
+  #sed-flux-4-new = #sed-flux-4 + local-sediment-delta
+
+hillslope-block-5
+  local-sediment-delta = 2 + #sed-flux-4-new
+  #sed-flux-5-new = #sed-flux-5 + local-sediment-delta
+
+hillslope-block-6
+  local-sediment-delta = 2 + #sed-flux-5-new
+  #sed-flux-6-new = #sed-flux-6 + local-sediment-delta
+
+hillslope-block-7
+  local-sediment-delta = 2 + #sed-flux-6-new
+  #sed-flux-7-new = #sed-flux-7 + local-sediment-delta
+
+hillslope-block-8
+  local-sediment-delta = 2 + #sed-flux-7-new
+  #sed-flux-8-new = #sed-flux-8 + local-sediment-delta
+
+hillslope-block-9
+  local-sediment-delta = 2 + #sed-flux-8-new
+  #sed-flux-9-new = #sed-flux-9 + local-sediment-delta
+
+hillslope-block-10
+  local-sediment-delta = 2 + #sed-flux-9-new
+  #sed-flux-10-new = #sed-flux-10 + local-sediment-delta
+
+display
+  fluxTable = [|hillBlock Flux |
+        "1" #sed-flux-1-new
+        "2" #sed-flux-2-new
+        "3" #sed-flux-3-new
+        "4" #sed-flux-4-new
+        "5" #sed-flux-5-new
+        "6" #sed-flux-6-new
+        "7" #sed-flux-7-new
+        "8" #sed-flux-8-new
+        "9" #sed-flux-9-new
+        "10" #sed-flux-10-new]
+  fSum = stat/sum(column: fluxTable.Flux)
+  outTable = [|descript val |
+          "Total Sediment Flux:" fSum]
+  #mech/output = outTable
